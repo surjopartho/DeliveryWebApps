@@ -1,0 +1,14 @@
+﻿@model List<Seller>
+<h2>Seler List</h2>
+
+<ul>
+    @foreach (var seller in Model)
+    {
+        <li>
+            <strong>@seller.Name</strong><br />
+            Email: @seller.Email<br />
+            Phone: @seller.Phone<br />
+        </li>
+    }   
+
+</ul>

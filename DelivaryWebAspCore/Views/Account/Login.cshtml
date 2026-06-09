@@ -1,0 +1,25 @@
+﻿@model DelivaryWebAspCore.Models.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form asp-action="Login" asp-controller="Account" method="post">
+
+    <div class="form-group">
+        
+        <input asp-for="Email" placeholder="Enter Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <br/>
+    <div class="form-group">
+        
+        <input asp-for="Password" type="password" placeholder="Password"  class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Login</button>
+
+</form>

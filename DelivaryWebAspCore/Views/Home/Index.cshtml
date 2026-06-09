@@ -1,0 +1,65 @@
+﻿
+<h1>Welcome to Delivary Apps</h1>
+
+
+
+
+@* 
+@model DelivaryWebAspCore.Models.Product
+
+@{
+    ViewData["Title"] = "Product Collection";
+}
+
+<h2> Product Collection</h2>
+
+<form asp-action="Index" method="Home" method="post">
+
+    <div>
+        
+        <input asp-for="SellerName" placeholder="Enter Seller Name" class="form-control" />
+    </div>
+
+    <br />
+
+    <div>
+        
+        <input asp-for="ProductType"placeholder="Enter Product Type" class="form-control" />
+    </div>
+
+    <br />
+
+    <div>
+       
+        <input asp-for="ProductName" placeholder="Enter Product Name" class="form-control" />
+    </div>
+
+    <br />
+
+    <div>
+        
+        <input asp-for="Weight" placeholder="Enter Weight (Kg) " class="form-control" />
+    </div>
+
+    <br />
+
+    <div>
+      
+        <input asp-for="Delivaryboy" placeholder="Enter Delivary Boy Name" class="form-control" />
+    </div>
+
+    <br />
+
+    <select asp-for="IsDelivary" class="form-control" asp-items="Html.GetEnumSelectList<DeliveryStatus>()">
+
+        <option value="">Delivery Status </option>
+
+    </select>
+    <br />
+
+
+    <button type="submit" class="btn btn-primary">
+        Save Product
+    </button>
+
+</form> *@

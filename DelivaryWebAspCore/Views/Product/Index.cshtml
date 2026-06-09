@@ -1,0 +1,98 @@
+﻿@model IEnumerable<DelivaryWebAspCore.Models.Product>
+
+@{
+    ViewData["Title"] = "Product Collection";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+
+        <div class="col-md-5 border-end pe-4 mb-4">
+            <h2>Product Collection</h2>
+            <br />
+            <form asp-action="Index" method="post">
+
+                <div>
+                    <input name="SellerName" placeholder="Enter Seller Name" class="form-control" required />
+                </div>
+                <br />
+
+                <div>
+                    <input name="ProductType" placeholder="Enter Product Type" class="form-control" required />
+                </div>
+                <br />
+
+                <div>
+                    <input name="ProductName" placeholder="Enter Product Name" class="form-control" required />
+                </div>
+                <br />
+
+                <div>
+                    <input name="Weight" placeholder="Enter Weight (Kg)" type="number" step="0.01" class="form-control" required />
+                </div>
+                <br />
+
+                <div>
+                    <input name="Delivaryboy" placeholder="Enter Delivary Boy Name" class="form-control" required />
+                </div>
+                <br />
+
+                <select name="IsDelivary" class="form-control" asp-items="Html.GetEnumSelectList<DeliveryStatus>()" required>
+                    <option value="">Delivery Status</option>
+                </select>
+                <br />
+
+                <button type="submit" class="btn btn-primary w-100">
+                    Save Product
+                </button>
+            </form>
+        </div>
+
+        <div class="col-md-7 ps-4">
+            <h2>Product List</h2>
+            <br />
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info">
+                    No products available yet.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Product Name</th>
+                                <th>Type</th>
+                                <th>Weight</th>
+                                <th>Seller</th>
+                                <th>Delivery Boy</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.ProductId</td>
+                                    <td>@item.ProductName</td>
+                                    <td>@item.ProductType</td>
+                                    <td>@item.Weight kg</td>
+                                    <td>@item.SellerName</td>
+                                    <td>@item.Delivaryboy</td>
+                                    <td>
+                                        <span class="badge bg-info text-dark">@item.IsDelivary</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
