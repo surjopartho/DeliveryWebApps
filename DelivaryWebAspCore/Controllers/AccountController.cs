@@ -40,19 +40,27 @@ namespace DelivaryWebAspCore.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
+            var seller = _appDbContext.Sellers.FirstOrDefault(s => s.Email == model.Email);
 
-            if (model.Email == "admin@gmail.com" && model.Password == "1234")
+            if (seller != null)
             {
-                var claims = new List<Claim>
+                var passwordHasher = new PasswordHasher<Seller>();
+                var result = passwordHasher.VerifyHashedPassword(seller, seller.Password, model.Password);
+
+                if (result == PasswordVerificationResult.Success)
                 {
-                    new Claim(ClaimTypes.Name, model.Email)
-                };
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, seller.Email),
+                        new Claim("SellerName", seller.Name)
+                    };
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
 
-                return RedirectToAction("Index", "Product");
+                    return RedirectToAction("Index", "Product");
+                }
             }
 
             ViewBag.ErrorMessage = "Invalid email or password.";
@@ -96,11 +104,13 @@ namespace DelivaryWebAspCore.Controllers
 
             _appDbContext.Sellers.Add(newSeller);
             await _appDbContext.SaveChangesAsync();
+
             return RedirectToAction("Login", "Account");
 
         }
 
-        public async Task<IActionResult> Logout() {
+        public async Task<IActionResult> Logout()
+        {
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
