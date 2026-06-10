@@ -1,7 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using System.Reflection.PortableExecutable;
-
-namespace DelivaryWebAspCore.Models
+﻿namespace DelivaryWebAspCore.Models
 {
     public class Product
     {

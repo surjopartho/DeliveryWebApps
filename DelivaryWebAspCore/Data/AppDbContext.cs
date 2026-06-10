@@ -1,6 +1,4 @@
-﻿
-using DelivaryWebAspCore.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace DelivaryWebAspCore.Data
 {
@@ -11,8 +9,9 @@ namespace DelivaryWebAspCore.Data
         {
         }
 
-        public DbSet<Seller> Sellers { get; set; }
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Models.Seller> Sellers { get; set; }
+        public DbSet<Models.Product> Products { get; set; }
+        //public DbSet<DelivaryWebAspCore.Models.Product> Products { get; set; }
 
     }
 }

@@ -1,0 +1,58 @@
+﻿
+@model DelivaryWebAspCore.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h3 class="card-title text-center mb-4 fw-bold">Create an Account</h3>
+
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger text-center mb-3" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<form asp-action="Register" method="Account" method="post">
+
+    <div class="form-group">
+        <input asp-for="Name" placeholder="Enter Your Name " class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <br />
+
+
+
+    <div class="form-group">
+        <input asp-for="Email" placeholder="Enter Your Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <br />
+
+
+    <div class="form-group">
+        <input asp-for="Password" type="password" placeholder="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <br />
+
+
+
+    <div class="form-group">
+        <input asp-for="ConfirmPassword" type="password" placeholder=" Retype Password" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <br />
+
+
+    <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-primary btn-lg fw-bold fs-6 shadow-sm">Register</button>
+    </div>
+
+    <div class="text-center">
+        <p class="mb-0 small text-muted">Already have an account? <a asp-action="Login" asp-controller="Account" class="text-primary fw-semibold text-decoration-none">Login here</a></p>
+    </div>
+
+</form>

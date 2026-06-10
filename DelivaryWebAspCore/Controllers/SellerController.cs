@@ -1,4 +1,5 @@
 ﻿using DelivaryWebAspCore.Data;
+using DelivaryWebAspCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
