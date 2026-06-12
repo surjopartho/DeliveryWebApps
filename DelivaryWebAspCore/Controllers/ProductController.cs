@@ -76,36 +76,42 @@
             ModelState.Remove("ProductPrice");
             //ModelState.Remove("Delivaryboy");
             var userId = User.Claims.FirstOrDefault(c => c.Type == "SellerName")?.Value;
-
             product.UserId = userId;
 
-
-            var defaultSeller = _appDbContext.Sellers.FirstOrDefault();
-            if (defaultSeller == null)
+            var currentSeller = _appDbContext.Sellers.FirstOrDefault(s => s.Name == userId);
+            if (currentSeller != null)
             {
-                defaultSeller = new Seller
+                product.SellerId = currentSeller.Id;
+            }
+            else
+            {
+
+
+
+                var defaultSeller = _appDbContext.Sellers.FirstOrDefault();
+                if (defaultSeller == null)
                 {
-                    Name = "Default Seller",
-                    Email = "Seller@gmail.com",
-                    Password = "123456",
-                    ShopeName = "Default Shop",
-                    Phone = 1234567890
-                };
-                _appDbContext.Sellers.Add(defaultSeller);
-                _appDbContext.SaveChanges();
+                    defaultSeller = new Seller
+                    {
+                        Name = "Default Seller",
+                        Email = "Seller@gmail.com",
+                        Password = "123456",
+                        ShopeName = "Default Shop",
+                        Phone = 1234567890
+                    };
+                    _appDbContext.Sellers.Add(defaultSeller);
+                    _appDbContext.SaveChanges();
+                }
+
+                product.SellerId = defaultSeller.Id;
             }
 
-            product.SellerId = defaultSeller.Id;
+            var defaultSellerName = _appDbContext.Sellers.FirstOrDefault();
 
-            if (string.IsNullOrEmpty(product.CustomerName)) product.CustomerName = defaultSeller.Name;
-            //if (string.IsNullOrEmpty(product.Delivaryboy)) product.Delivaryboy = "Not Assigned";
-
-
-
+            if (string.IsNullOrEmpty(product.CustomerName)) product.CustomerName = defaultSellerName.Name;
             double charge = _deliveryService.CalculateCharge(product.Weight);
-            //double totalBil = product.ProductPrice + product.Charge;
-            //ViewBag.Totalbill = totalBil;
 
+            
             ViewBag.Charge = charge;
             product.Charge = charge;
 
