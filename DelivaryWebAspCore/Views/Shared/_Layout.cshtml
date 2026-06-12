@@ -32,6 +32,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Seller" asp-action="Index">Seller</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated && User.Identity.Name == "partho@gmail.com")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-danger fw-bold" asp-controller="Admin" asp-action="Dashboard">Admin Dashboard</a>
+                            </li>
+                        }
                     </ul>
 
                     <ul class="navbar-nav">

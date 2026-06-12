@@ -1,0 +1,128 @@
+﻿@model IEnumerable<DelivaryWebAspCore.Models.Product>
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    var sellerList = ViewBag.Seller as IEnumerable<DelivaryWebAspCore.Models.Seller>;
+}
+
+<div class="container-fluid mt-4" style="font-family: system-ui, -apple-system, sans-serif;">
+
+
+    <div class="mb-4 pb-3 border-bottom">
+        <h2 class="text-dark fw-light m-0">Admin Management Dashboard</h2>
+        <p class="text-muted small m-0 mt-1">Welcome back, Partho. Overviewing sellers and order flow.</p>
+    </div>
+
+    <div class="row">
+        
+        <div class="col-lg-4 mb-4">
+            <div class="border rounded bg-white p-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="text-uppercase tracking-wider text-muted small m-0 fw-semibold">Registered Sellers</h6>
+                    <span class="text-dark small fw-bold">@(sellerList?.Count() ?? 0)</span>
+                </div>
+
+                @if (sellerList == null || !sellerList.Any())
+                {
+                    <div class="text-muted text-center py-4 small border border-dashed rounded">No sellers registered yet.</div>
+                }
+                else
+                {
+                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                        <table class="table align-middle m-0 small">
+                            <thead>
+                                <tr class="text-muted border-bottom" style="font-size: 0.8rem;">
+                                    <th class="fw-normal pb-2 text-start">Shop</th>
+                                    <th class="fw-normal pb-2 text-start">Seller</th>
+                                    <th class="fw-normal pb-2 text-end">Contact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var seller in sellerList)
+                                {
+                                    <tr class="border-bottom-0">
+                                        <td class="py-2 text-start text-dark fw-semibold">@seller.ShopeName</td>
+                                        <td class="py-2 text-start text-muted">@seller.Name</td>
+                                        <td class="py-2 text-end">
+                                            <span class="d-block text-dark">@seller.Phone</span>
+                                            <span class="d-block text-muted" style="font-size: 0.75rem;">@seller.Email</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+
+       
+        <div class="col-lg-8 mb-4">
+            <div class="border rounded bg-white p-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="text-uppercase tracking-wider text-muted small m-0 fw-semibold">Orders Tracking</h6>
+                    <span class="text-dark small fw-bold">@(Model?.Count() ?? 0) Total</span>
+                </div>
+
+                @if (Model == null || !Model.Any())
+                {
+                    <div class="text-muted text-center py-4 small border border-dashed rounded">No products submitted yet.</div>
+                }
+                else
+                {
+                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                        <table class="table align-middle m-0 small">
+                            <thead>
+                                <tr class="text-muted border-bottom" style="font-size: 0.8rem;">
+                                    <th class="fw-normal pb-2 text-start">Product Details</th>
+                                    <th class="fw-normal pb-2 text-start">Source</th>
+                                    <th class="fw-normal pb-2 text-center">Current Status</th>
+                                    <th class="fw-normal pb-2 text-end">Update</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="border-bottom-0">
+                                        <td class="py-3 text-start">
+                                            <span class="fw-semibold text-dark d-block">@item.ProductName</span>
+                                            <span class="text-muted d-block" style="font-size: 0.75rem;">To: @item.CustomerName | @item.CustomerLocation</span>
+                                        </td>
+
+                                        <td class="py-3 text-start">
+                                            <span class="text-dark d-block">@item.Seller?.Name</span>
+                                            <span class="text-muted d-block" style="font-size: 0.75rem;">@item.Seller?.ShopeName</span>
+                                        </td>
+
+                                        <td class="py-3 text-center">
+                                            
+                                            <span class="text-uppercase fw-semibold" style="font-size: 0.75rem; tracking-spacing: 0.5px;">
+                                                @item.Status
+                                            </span>
+                                        </td>
+
+                                        <td class="py-3 text-end">
+                                            <form asp-action="UpdateStatus" asp-controller="Admin" method="post" class="d-flex gap-2 justify-content-end align-items-center">
+                                                <input type="hidden" name="ProductId" value="@item.ProductId" />
+
+                                                <select name="newStatus" class="form-select form-select-sm border-secondary-subtle" style="width: 120px; font-size: 0.8rem;">
+                                                    <option value="Pending" selected="@(item.Status == DelivaryWebAspCore.Models.DeliveryStatus.Pending ? "selected" : null)">Pending</option>
+                                                    <option value="Processing" selected="@(item.Status == DelivaryWebAspCore.Models.DeliveryStatus.Processing ? "selected" : null)">Processing</option>
+                                                    <option value="OnTheWay" selected="@(item.Status == DelivaryWebAspCore.Models.DeliveryStatus.OnTheWay ? "selected" : null)">On the Way</option>
+                                                    <option value="Delivered" selected="@(item.Status == DelivaryWebAspCore.Models.DeliveryStatus.Delivered ? "selected" : null)">Delivered</option>
+                                                    <option value="Cancelled" selected="@(item.Status == DelivaryWebAspCore.Models.DeliveryStatus.Cancelled ? "selected" : null)">Cancelled</option>
+                                                </select>
+
+                                                <button type="submit" class="btn btn-sm btn-outline-dark px-2" style="font-size: 0.75rem;">Save</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

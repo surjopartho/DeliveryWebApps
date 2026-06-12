@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DelivaryWebAspCore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260610051351_UpdatedProductModel")]
-    partial class UpdatedProductModel
+    [Migration("20260611100632_AddStatusToProduct1")]
+    partial class AddStatusToProduct1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,25 +32,36 @@ namespace DelivaryWebAspCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
-                    b.Property<string>("Delivaryboy")
+                    b.Property<double>("Charge")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CustomerLocation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IsDelivary")
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("DeliveryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IsType")
                         .HasColumnType("int");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
-                    b.Property<string>("ProductType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("ProductPrice")
+                        .HasColumnType("float");
 
                     b.Property<int>("SellerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SellerName")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

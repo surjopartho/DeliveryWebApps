@@ -1,24 +1,28 @@
 ﻿@model IEnumerable<DelivaryWebAspCore.Models.Product>
+@using DelivaryWebAspCore.Models
 
 @{
-    ViewData["Title"] = "Product Collection";
+    ViewData["Title"] = "Product Delivery list";
 }
 
 <div class="container-fluid mt-4">
     <div class="row">
 
         <div class="col-md-5 border-end pe-4 mb-4">
-            <h2>Product Collection</h2>
+            <h2>Product</h2>
             <br />
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
             <form asp-action="Index" method="post">
 
                 <div>
-                    <input name="SellerName" placeholder="Enter Seller Name" class="form-control" required />
+                    <input name="CustomerName" placeholder="Enter Your Customer Name" class="form-control" required />
                 </div>
                 <br />
 
                 <div>
-                    <input name="ProductType" placeholder="Enter Product Type" class="form-control" required />
+                    <input name="CustomerLocation" placeholder="Customer Location" class="form-control" required />
                 </div>
                 <br />
 
@@ -32,13 +36,8 @@
                 </div>
                 <br />
 
-                <div>
-                    <input name="Delivaryboy" placeholder="Enter Delivary Boy Name" class="form-control" required />
-                </div>
-                <br />
-
-                <select name="IsDelivary" class="form-control" asp-items="Html.GetEnumSelectList<DeliveryStatus>()" required>
-                    <option value="">Delivery Status</option>
+                <select name="IsType" class="form-control" asp-items="Html.GetEnumSelectList<TypeOfProduct>()" required>
+                    <option value="">Select Product Type</option>
                 </select>
                 <br />
 
@@ -66,27 +65,52 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Product Name</th>
-                                <th>Type</th>
+                                <th>Location</th>
                                 <th>Weight</th>
-                                <th>Seller</th>
-                                <th>Delivery Boy</th>
+                                <th>Customer Name</th>
+                                <th>Type</th>
+                                <th>Total Bill</th>
                                 <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @{
+                                int serial = 1;
+                            }
+
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@item.ProductId</td>
+                                    <td>@serial</td>
                                     <td>@item.ProductName</td>
-                                    <td>@item.ProductType</td>
-                                    <td>@item.Weight kg</td>
-                                    <td>@item.SellerName</td>
-                                    <td>@item.Delivaryboy</td>
+                                    <td>@item.CustomerLocation</td>
+                                    <td>@item.Weight Kg</td>
+                                    <td>@item.CustomerName</td>
                                     <td>
-                                        <span class="badge bg-info text-dark">@item.IsDelivary</span>
+                                        <span class="badge bg-info text-dark">@item.IsType</span>
+                                    </td>
+                                    <td>@item.Charge</td>
+
+                                    <td>
+                                        <span class="badge @(item.Status == DeliveryStatus.Delivered ? "bg-success" : "bg-primary")">
+                                            @item.Status
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Delete" asp-route-id="@item.ProductId"
+                                           class="btn btn-sm btn-danger"
+                                           onclick="return confirm('Are you sure you want to delete this product?')">
+                                            Delete
+                                        </a>
                                     </td>
                                 </tr>
+                                serial++;
                             }
                         </tbody>
                     </table>

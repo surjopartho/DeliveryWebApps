@@ -5,7 +5,7 @@
 namespace DelivaryWebAspCore.Migrations
 {
     /// <inheritdoc />
-    public partial class AddSellerTable : Migration
+    public partial class AddStatusColumnToProduct : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
